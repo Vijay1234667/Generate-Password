@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <section class="password-generator-section">
+    <div class="container">
+      <div class="password-generate-body">
+        <h2 class="mb-3">Password Generate</h2>
+        <input type="text" class="inputbox password-input mb-2" disabled id="passwordOutput">
+        <input type="range"  min="1" max="30" class="inputbox" id="inputSlider">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h6>Password length</h6>
+          <h6 id="sliderValue">6</h6>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h6>Include Lowercase Letters (a-z)</h6>
+          <input type="checkbox" name="lowercase" id="lowercase">
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h6>Include Uppercase Letters (A-Z)</h6>
+          <input type="checkbox" name="uppercase" id="uppercase">
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h6>Include Numbers (0-9)</h6>
+          <input type="checkbox" name="numbers" id="numbers">
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h6>Include Symbols</h6>
+          <input type="checkbox" name="symbols" id="symbols">
+        </div>
+        <div class="d-flex justify-content-between Generate-btn align-items-center mb-2">
+          <button class="btn w-100" id="generateBtn">Generate Password</button>
+        </div>
+        <div class="d-flex justify-content-between Copy-btn align-items-center">
+          <button class="btn w-100 btn-success" id="copyBtn">Copy to Clipboard</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function generatePassword() {
+      const passwordLength = document.getElementById('inputSlider').value;
+      const includeLowercase = document.getElementById('lowercase').checked;
+      const includeUppercase = document.getElementById('uppercase').checked;
+      const includeNumbers = document.getElementById('numbers').checked;
+      const includeSymbols = document.getElementById('symbols').checked;
+
+      const lowercaseChars = "abcdefghijklmnopqrstuvwxyz";
+      const uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      const numbers = "0123456789";
+      const symbols = "!@#$%^&*()_+[]{}|;:,.<>?";
+
+      let characters = "";
+      if (includeLowercase) characters += lowercaseChars;
+      if (includeUppercase) characters += uppercaseChars;
+      if (includeNumbers) characters += numbers;
+      if (includeSymbols) characters += symbols;
+
+      let password = "";
+      for (let i = 0; i < passwordLength; i++) {
+        password += characters.charAt(Math.floor(Math.random() * characters.length));
+      }
+
+      document.getElementById('passwordOutput').value = password || "Select Options!";
+    }
+
+    function copyToClipboard() {
+      const passwordField = document.getElementById('passwordOutput');
+      passwordField.select(); 
+      passwordField.setSelectionRange(0, 99999); 
+      navigator.clipboard.writeText(passwordField.value)
+        .then(() => alert("Password copied to clipboard!"))
+        .catch(err => alert("Failed to copy: " + err));
+    }
+
+    document.getElementById('inputSlider').addEventListener('input', function () {
+      document.getElementById('sliderValue').textContent = this.value;
+    });
+
+    document.getElementById('generateBtn').addEventListener('click', generatePassword);
+    document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
+  </script>
+
+
+
+  <script src="./js/bootstrap.bundle.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
